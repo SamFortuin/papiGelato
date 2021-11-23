@@ -1,10 +1,15 @@
 #imported from other code but relative import be acting wack
 def intConvert(num):
-    numConvert = False
+    import string
+    numConvert2 = True
+    alphabet = list(string.ascii_lowercase)
     for i in range(10):
         if str(i) in num:
-            numConvert = True
-    if numConvert == True:
+            numConvert1 = True
+    for x in range(26):
+        if alphabet[x] in num:
+            numConvert2 = False
+    if numConvert1 == True and numConvert2 == True:
         return int(num)
     else:
         return num
@@ -55,4 +60,5 @@ def main(abiMode=False):
         main()
 
 print('Welkom bij Papi Gelato je mag alle smaken kiezen zolang het maar vanille ijs is.')
-main(True)
+main()
+#main(True)
