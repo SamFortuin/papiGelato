@@ -13,14 +13,19 @@ def intConvert(num):
     else:
         return num
 
-
+def clearScreen(sleepTime):
+    from time import sleep
+    from os import system
+    sleep(sleepTime)
+    system("cls")
 
 def main(abiMode=False):
-    bolAantal = intConvert(input('Hoeveel boljes wilt u?\n'))
-    #bolAantal = intConvert(bolAantal)
+    clearScreen(1)
+    bolAantal = intConvert(input('Hoeveel boljes wilt u?\n').lower())
+    bolList = []
     if str(type(bolAantal)) == "<class 'int'>":
         if bolAantal <= 3 and bolAantal >= 1:
-            bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje of \nB) een bakje?\n').lower().replace("een","").replace("a","hoorntje",1).replace("b","bakje",1)
+            bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje?\n').lower().replace("een","").replace("a","hoorntje",1).replace("b","bakje",1)
             if bakOfHoorn == "hoorntje" or bakOfHoorn == "bakje":
                 print(f'Hier is uw {bakOfHoorn} met {bolAantal} bolletje(s)')
             else:
@@ -45,6 +50,19 @@ def main(abiMode=False):
             else:
                 print("invalid input")
                 main()
+        if bolAantal < 9:
+            target = 1
+            while target <= bolAantal:
+                welkeBol = str(input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower().replace('a','aardbei').replace('c','chocolade').replace('m','munt').replace('v','vanille')
+                if welkeBol == "aardbei" or welkeBol == "chocolade" or welkeBol == "munt" or welkeBol == "vanille":
+                    bolList.append(welkeBol)
+                    target+=1
+                else:
+                    print('Dat is geen ijs smaak.')
+                    target += 0
+        else:
+            pass
+
         again = input('Wilt u nog meer bestellen? (J/N)').lower()
         if again == 'n':
             print('Okay, fijne dag verder.')
@@ -61,3 +79,5 @@ def main(abiMode=False):
 print('Welkom bij Papi Gelato je mag alle smaken kiezen zolang het maar vanille ijs is.')
 main()
 #main(True)
+
+#TODO fix print order with 1 to 3 bollen
