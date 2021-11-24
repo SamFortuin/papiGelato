@@ -63,11 +63,11 @@ def main(abiMode=False):
         else:
             pass
 
-        again = input('Wilt u nog meer bestellen? (J/N)').lower()
+        again = input('Wilt u nog meer bestellen? (J/N)\n').lower()
         if again == 'n':
             print('Okay, fijne dag verder.')
             exit()
-        elif again == 'j':
+        elif again == 'j' or again == 'y':
             main()
         else:
             print("invalid input")
@@ -81,3 +81,4 @@ main()
 #main(True)
 
 #TODO fix print order with 1 to 3 bollen
+#TODO use the list for a reciept, next assignement
