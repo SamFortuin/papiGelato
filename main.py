@@ -1,3 +1,13 @@
+from time import sleep
+
+
+def listPrint(List,delay=True):
+    roomCount = len(List)
+    for i in range(roomCount):
+        if delay:
+            sleep(0.12)
+        print(List[i])
+
 def intConvert(num):
     import string
     numConvert2 = True
@@ -13,6 +23,36 @@ def intConvert(num):
     else:
         return num
 
+recieptList = ['---------[Papi Gelato]---------'] #variable stored outside function otherwise it resets itself
+priceList = []
+
+def printReciept():
+    tasteDict = {
+        'aarbei':bolList.count('aardbei'),
+        'chocolade':bolList.count('chocolade'),
+        'munt':bolList.count('munt'),
+        'vanille':bolList.count('vanille')
+    }
+    recepticleDict = {
+        'bakje':0.75,
+        'hoorntje':1.25
+    }
+    recieptList.append('ijsje '+str(i)+':')
+    for x,y in tasteDict.items():
+        if y > 0:
+            priceList.append(y*1.1)
+            priceList.append(recepticleDict[bakOfHoorn])
+            recieptList.append(str(y)+' bolletjes '+str(x)+' = €'+str(format((y*1.1),'.2f')).replace('.',','))
+    recieptList.append('1 '+str(bakOfHoorn)+' = € '+str(recepticleDict[bakOfHoorn]).replace('.',','))
+    recieptList.append('-------------------------------')
+    if again == 'n':
+        recieptList[len(recieptList)-1] = ('------------[Total]------------')
+        while len(priceList) > 1: #adds up and deletes part of the list until there is only 1 value left which is then used in the total
+            priceList[1] = priceList[0] + priceList[1]
+            del priceList[0]
+        recieptList.append('€'+str(format(priceList[0],'.2f')).replace('.',','))
+
+              
 def clearScreen(sleepTime):
     from time import sleep
     from os import system
@@ -20,14 +60,16 @@ def clearScreen(sleepTime):
     system("cls")
 
 def main(abiMode=False):
-    clearScreen(1)
-    bolAantal = intConvert(input('Hoeveel boljes wilt u?\n').lower())
+    clearScreen(1.5)
+    global bolAantal, bolList, bakOfHoorn, again
     bolList = []
+    bolAantal = intConvert(input('Hoeveel bolletjes wilt u?\n').lower())
     if str(type(bolAantal)) == "<class 'int'>":
         if bolAantal <= 3 and bolAantal >= 1:
-            bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje?\n').lower().replace("een","").replace("a","hoorntje",1).replace("b","bakje",1)
+            bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","").replace("a","hoorntje",1).replace("b","bakje",1)
             if bakOfHoorn == "hoorntje" or bakOfHoorn == "bakje":
-                print(f'Hier is uw {bakOfHoorn} met {bolAantal} bolletje(s)')
+                #print(f'Hier is uw {bakOfHoorn} met {bolAantal} bolletje(s)')
+                pass
             else:
                 if abiMode:
                     if bakOfHoorn == "nee":
@@ -38,6 +80,7 @@ def main(abiMode=False):
                     print('Dat is geen bakje of hoortje')
         elif bolAantal >= 4 and bolAantal <= 8:
             print(f'Dan krijgt u van mij een bakje met {bolAantal} bolletjes')
+            bakOfHoorn = 'bakje'
         elif bolAantal >= 9:
             print('Sorry, zulke grote bakken hebben we niet')
         elif bolAantal == 0:
@@ -62,12 +105,16 @@ def main(abiMode=False):
                     target += 0
         else:
             pass
-
-        again = input('Wilt u nog meer bestellen? (J/N)\n').lower()
+        
+        again = input('Wilt u nog meer ijsjes bestellen? (J/N)\n').lower()
         if again == 'n':
-            print('Okay, fijne dag verder.')
-            exit()
+            global i
+            i+=1
+            print('Okay, hier is uw bonnetje. fijne dag verder.\n\n')
+            printReciept()
         elif again == 'j' or again == 'y':
+            i+=1
+            printReciept()
             main()
         else:
             print("invalid input")
@@ -76,9 +123,7 @@ def main(abiMode=False):
         print("Niet een getal, probeer het opnieuw.")
         main()
 
-print('Welkom bij Papi Gelato je mag alle smaken kiezen zolang het maar vanille ijs is.')
+print('Welkom bij Papi Gelato.')
+i = 0
 main()
-#main(True)
-
-#TODO fix print order with 1 to 3 bollen
-#TODO use the list for a reciept, next assignement
+listPrint(recieptList,False)
