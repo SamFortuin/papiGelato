@@ -23,12 +23,14 @@ def intConvert(num):
     else:
         return num
 
-#variables stored outside function otherwise they resets themselves
-recieptList = ['---------[Papi Gelato]---------']
-priceList = []
+def clearScreen(sleepTime):
+    from time import sleep
+    from os import system
+    sleep(sleepTime)
+    system("cls")
 
-def printReciept():
-    tasteDict = {
+def printReciept(): 
+    tasteDict = { 
         'aarbei':bolList.count('aardbei'),
         'chocolade':bolList.count('chocolade'),
         'munt':bolList.count('munt'),
@@ -39,11 +41,11 @@ def printReciept():
         'hoorntje':1.25
     }
     recieptList.append('ijsje '+str(i)+':')
-    for x,y in tasteDict.items():
+    for x,y in tasteDict.items(): #loops trough the dict
         if y > 0:
             priceList.append(y*1.1)
-            priceList.append(recepticleDict[bakOfHoorn])
             recieptList.append(str(y)+' bolletjes '+str(x)+' = €'+str(format((y*1.1),'.2f')).replace('.',','))
+    priceList.append(recepticleDict[bakOfHoorn])
     recieptList.append('1 '+str(bakOfHoorn)+' = € '+str(recepticleDict[bakOfHoorn]).replace('.',','))
     recieptList.append('-------------------------------')
     if again == 'n':
@@ -53,14 +55,7 @@ def printReciept():
             del priceList[0]
         recieptList.append('€'+str(format(priceList[0],'.2f')).replace('.',','))
 
-              
-def clearScreen(sleepTime):
-    from time import sleep
-    from os import system
-    sleep(sleepTime)
-    system("cls")
-
-def main(abiMode=False):
+def papi(abiMode=False):
     clearScreen(1.5)
     global bolAantal, bolList, bakOfHoorn, again
     bolList = []
@@ -124,7 +119,10 @@ def main(abiMode=False):
         print("Niet een getal, probeer het opnieuw.")
         main()
 
-print('Welkom bij Papi Gelato.')
+#variables stored outside function otherwise they resets themselves
+recieptList = ['---------[Papi Gelato]---------']
+priceList = []
 i = 0
-main()
+print('Welkom bij Papi Gelato.') #prints welcome line only at start of code
+papi()
 listPrint(recieptList,False)
