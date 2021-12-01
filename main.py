@@ -1,7 +1,7 @@
-from time import sleep
+#99059050, Sam Fortuin
 
-
-def listPrint(List,delay=True):
+def listPrint(List,delay=False):
+    from time import sleep    
     roomCount = len(List)
     for i in range(roomCount):
         if delay:
@@ -9,9 +9,9 @@ def listPrint(List,delay=True):
         print(List[i])
 
 def intConvert(num):
-    import string
+    from string import ascii_lowercase
     numConvert2 = True
-    alphabet = list(string.ascii_lowercase)
+    alphabet = list(ascii_lowercase)
     for i in range(10):
         if str(i) in num:
             numConvert1 = True
@@ -23,7 +23,8 @@ def intConvert(num):
     else:
         return num
 
-recieptList = ['---------[Papi Gelato]---------'] #variable stored outside function otherwise it resets itself
+#variables stored outside function otherwise they resets themselves
+recieptList = ['---------[Papi Gelato]---------']
 priceList = []
 
 def printReciept():
@@ -46,7 +47,7 @@ def printReciept():
     recieptList.append('1 '+str(bakOfHoorn)+' = € '+str(recepticleDict[bakOfHoorn]).replace('.',','))
     recieptList.append('-------------------------------')
     if again == 'n':
-        recieptList[len(recieptList)-1] = ('------------[Total]------------')
+        recieptList[len(recieptList)-1] = ('------------[Total]------------') #total instead of totaal because of concistency with the papi gelato line
         while len(priceList) > 1: #adds up and deletes part of the list until there is only 1 value left which is then used in the total
             priceList[1] = priceList[0] + priceList[1]
             del priceList[0]
