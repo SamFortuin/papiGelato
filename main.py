@@ -40,6 +40,13 @@ def printReciept():
         'bakje':0.75,
         'hoorntje':1.25
     }
+    toppingDict = {
+        'geen':0,
+        'slagroom':0.5,
+        'sprinkles':0.3,#per bol
+        'caramelHoorn':0.6,
+        'caramelBak':0.9
+    }
     recieptList.append('ijsje '+str(i)+':')
     for x,y in tasteDict.items(): #loops trough the dict
         if y > 0:
