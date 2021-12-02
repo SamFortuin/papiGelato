@@ -87,7 +87,7 @@ def printReciept():
             del priceList[0]
         recieptList.append(recieptString(priceList[0],False))
 
-def papi(abiMode=False):
+def papiParticulier(abiMode=False):
     clearScreen(1.5)
     global bolAantal, bolList, bakOfHoorn, again, toppingPass
     bolList = []
@@ -117,10 +117,10 @@ def papi(abiMode=False):
                 print('Okay, fijne dag verder.')
                 exit()
             elif again == 'j':
-                papi()
+                papiParticulier()
             else:
                 print("invalid input")
-                papi()
+                papiParticulier()
         if bolAantal < 9:
             target = 1
             while target <= bolAantal:
@@ -150,18 +150,24 @@ def papi(abiMode=False):
         elif again == 'j' or again == 'y':
             i+=1
             printReciept()
-            papi()
+            papiParticulier()
         else:
             print("invalid input")
-            papi()
+            papiParticulier()
     else:
         print("Niet een getal, probeer het opnieuw.")
-        papi()
+        papiParticulier()
 
+def papiBusiness():
+    pass
 #variables stored outside function otherwise they resets themselves
 recieptList = ['---------[Papi Gelato]---------']
 priceList = []
 i = 0
 print('Welkom bij Papi Gelato.') #prints welcome line only at start of code
-papi()
-listPrint(recieptList,False)
+business = input("Bent u\n1) particulier\n2) zakelijk")
+if business == '1' or business == 'particulier':
+    papiParticulier()
+    listPrint(recieptList,False)
+elif business == '2' or business == 'zakelijk':
+    papiBusiness()
