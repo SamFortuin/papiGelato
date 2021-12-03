@@ -1,8 +1,5 @@
 #99059050, Sam Fortuin
 
-from string import ascii_lowercase
-
-
 def listPrint(List,delay=False):
     from time import sleep    
     roomCount = len(List)
@@ -51,7 +48,6 @@ def printReciept():
         'hoorntje':1.25
     }
     toppingDict = {
-        'geen':0,
         'slagroom':0.5,
         'sprinkels':0.3*bolAantal,
         'caramelHoorn':0.6,
@@ -92,7 +88,7 @@ def papiParticulier(abiMode=False):
     global bolAantal, bolList, bakOfHoorn, again, toppingPass
     bolList = []
     bolAantal = intConvert(input('Hoeveel bolletjes wilt u?\n').lower())
-    if str(type(bolAantal)) == "<class 'int'>":
+    if type(bolAantal) == int:
         if bolAantal <= 3 and bolAantal >= 1:
             bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","").replace("a","hoorntje",1).replace("b","bakje",1)
             if bakOfHoorn == "hoorntje" or bakOfHoorn == "bakje":
@@ -159,15 +155,26 @@ def papiParticulier(abiMode=False):
         papiParticulier()
 
 def papiBusiness():
-    pass
+    liters = intConvert(input('Hoeveel liters ijs wilt u kopen?\n'))
+    if str(type(liters)) == "<class 'int'>":
+        pass
+    else:
+        print('Niet een cijfer. Probeer opnieuw?\n')
+        papiBusiness()
+
 #variables stored outside function otherwise they resets themselves
 recieptList = ['---------[Papi Gelato]---------']
 priceList = []
 i = 0
 print('Welkom bij Papi Gelato.') #prints welcome line only at start of code
-business = input("Bent u\n1) particulier\n2) zakelijk")
+business = input("Bent u\n1) particulier\n2) zakelijk\n")
 if business == '1' or business == 'particulier':
     papiParticulier()
     listPrint(recieptList,False)
 elif business == '2' or business == 'zakelijk':
     papiBusiness()
+else:
+    print('Niet een optie probeer opnieuw')
+
+#TODO if ordering too much icecream still asks for sprinkles
+#TODO find a way to do replace statements where aplicable
