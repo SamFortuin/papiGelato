@@ -6,6 +6,12 @@ from os import system
 i = 0
 priceList = []
 recieptList = ['---------[Papi Gelato]---------']
+bolDict = {
+    'a':'aardbei',
+    'c':'chocolade',
+    'm':'munt',
+    'v':'vanille'
+}
 
 def listPrint(List,delay=False):
     roomCount = len(List)
@@ -141,12 +147,6 @@ def papiParticulier(abiMode=False):
             target = 1
             while target <= bolAantal:
                 welkeBol = str(input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower()[:1]
-                bolDict = {
-                    'a':'aardbei',
-                    'c':'chocolade',
-                    'm':'munt',
-                    'v':'vanille'
-                }
                 if welkeBol in bolDict.keys():
                     bolList.append(bolDict[welkeBol])
                     target+=1
@@ -176,7 +176,14 @@ def papiParticulier(abiMode=False):
 def papiBusiness():
     liters = intConvert(input('Hoeveel liters ijs wilt u kopen?\n'))
     if type(liters) == int:
-        pass
+        target = 1
+        while target <= liters:
+            literSmaak = str(input(f'Welke smaak wilt u voor liter {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower()[:1]
+            if literSmaak in bolDict.keys():
+                target+=1
+            else:
+                print('Dat is geen ijs smaak.')
+                target+=0
     else:
         print('Niet een cijfer. Probeer opnieuw?')
         clearScreen(0.5)
