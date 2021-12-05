@@ -33,8 +33,13 @@ def clearScreen(sleepTime=2.5):
     system("cls")
 
 def recieptString(var,var2):
-    string  = str(var)+' = €'+str(format((var2),'.2f')).replace('.',',')
-    return string
+    string = [str(var).split(),str(format((var2),'.2f')).replace('.',','),'']
+    for i in range(len(string[0])):
+        string[0][i] = string[0][i].capitalize()
+        string[2] += string[0][i]+' '
+    #for i in range(len(string1)):
+    stringOut = string[2] +'= €'+string[1]
+    return stringOut
     
 def printReciept(): 
     tasteDict = { 
@@ -53,7 +58,7 @@ def printReciept():
         'caramelHoorn':0.6,
         'caramelBak':0.9
     }
-    recieptList.append('ijsje '+str(i)+':')
+    recieptList.append('Ijsje '+str(i)+':')
     for x,y in tasteDict.items(): #loops trough the dict
         if y > 0:
             priceList.append(y*1.1)
@@ -71,22 +76,24 @@ def printReciept():
         elif bakOfHoorn == 'hoorntje':
             recieptList.append(recieptString(toppingPass,toppingDict['caramelHoorn']))
             priceList.append(toppingDict['caramelHoorn'])
-    else:
-        pass
     priceList.append(recepticleDict[bakOfHoorn])
     recieptList.append(recieptString('1 '+str(bakOfHoorn),recepticleDict[bakOfHoorn]))
     recieptList.append('-------------------------------')
     if again == 'n':
-        recieptList[len(recieptList)-1] = ('------------[Total]------------') #total instead of totaal because of concistency with the papi gelato line
         while len(priceList) > 1: #adds up and deletes part of the list until there is only 1 value left which is then used in the total
             priceList[1] = priceList[0] + priceList[1]
             del priceList[0]
-        recieptList.append('€'+str(format((priceList[0]),'.2f')).replace('.',','))
+        recieptList.append(recieptString('totaal',priceList[0]))
 
 def toppingQuestion():
     global toppingPass
-    topping = input('Welke u een topping over uw ijsje?\nG) Geen\nSL) Slagroom\nSP) Sprinkels\nC) Caramel\n').lower()[:2]
-    toppingDict = {'ge' or 'g':'geen', 'sl':'slagroom','sp':'sprinkels','c' or 'ca':'caramel'}
+    topping = input('Welke u een topping over uw ijsje?\nG) Geen\nSL) Slagroom\nSP) Sprinkels\nC) Caramel\n').lower().replace('g','ge').replace('c','ca')[:2]
+    toppingDict = {
+        'ge':'geen',
+        'sl':'slagroom',
+        'sp':'sprinkels',
+        'ca':'caramel'
+    }
     if topping in toppingDict.keys():
         toppingPass = toppingDict[topping]
     else:
@@ -101,7 +108,10 @@ def papiParticulier(abiMode=False):
     if type(bolAantal) == int:
         if bolAantal <= 3 and bolAantal >= 1:
             bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","")[:1].replace('h','a')
-            bakOfHoornDict = {'a':'hoorntje','b':'bakje'}
+            bakOfHoornDict = {
+                'a':'hoorntje',
+                'b':'bakje'
+            }
             if bakOfHoorn in bakOfHoornDict.keys():
                 bakOfHoorn = bakOfHoornDict[bakOfHoorn]
             else:
@@ -118,7 +128,7 @@ def papiParticulier(abiMode=False):
         elif bolAantal >= 9:
             print('Sorry, zulke grote bakken hebben we niet')
         elif bolAantal == 0:
-            again = input('Wilt u geen ijsje?')[:1]
+            again = input('Wilt u geen ijsje?').lower()[:1]
             if again == 'n':
                 print('Okay, fijne dag verder.')
                 exit()
@@ -131,15 +141,18 @@ def papiParticulier(abiMode=False):
             target = 1
             while target <= bolAantal:
                 welkeBol = str(input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower()[:1]
-                bolDict = {'a':'aardbei','c':'chocolade','m':'munt','v':'vanille'}
+                bolDict = {
+                    'a':'aardbei',
+                    'c':'chocolade',
+                    'm':'munt',
+                    'v':'vanille'
+                }
                 if welkeBol in bolDict.keys():
                     bolList.append(bolDict[welkeBol])
                     target+=1
                 else:
                     print('Dat is geen ijs smaak.')
                     target += 0
-        else:
-            pass
 
         toppingQuestion()
         
@@ -165,7 +178,8 @@ def papiBusiness():
     if type(liters) == int:
         pass
     else:
-        print('Niet een cijfer. Probeer opnieuw?\n')
+        print('Niet een cijfer. Probeer opnieuw?')
+        clearScreen(0.5)
         papiBusiness()
 
 def main():
@@ -182,4 +196,3 @@ def main():
         main()
 
 main()
-#TODO find a way to do replace statements where aplicable
