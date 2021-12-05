@@ -1,6 +1,6 @@
 #99059050, Sam Fortuin
 from time import sleep
-from string import ascii_lowercase
+from string import ascii_lowercase,capwords
 from os import system
 
 i = 0
@@ -21,7 +21,8 @@ def listPrint(List,delay=False):
         print(List[i])
 
 def intConvert(num):
-    numConvert1 = False;numConvert2 = True
+    numConvert1 = False
+    numConvert2 = True
     alphabet = list(ascii_lowercase)
     for i in range(10):
         if str(i) in num:
@@ -39,15 +40,17 @@ def clearScreen(sleepTime=2.5):
     system("cls")
 
 def recieptString(var,var2):
-    string = [str(var).split(),str(format((var2),'.2f')).replace('.',','),'']
-    for i in range(len(string[0])):
-        string[0][i] = string[0][i].capitalize()
-        string[2] += string[0][i]+' '
-    #for i in range(len(string1)):
-    stringOut = string[2] +'= €'+string[1]
+    string1 = capwords(str(var))
+    string2 = str(format((var2),'.2f')).replace('.',',')
+    stringOut = string1 +'= €'+string2
     return stringOut
     
-def printReciept(): 
+def toppingReciept(var):
+    recieptList.append(recieptString(toppingPass,toppingDict[var]))
+    priceList.append(toppingDict[var])
+
+def printReciept():
+    global toppingDict 
     tasteDict = { 
         'aarbei':bolList.count('aardbei'),
         'chocolade':bolList.count('chocolade'),
@@ -70,18 +73,14 @@ def printReciept():
             priceList.append(y*1.1)
             recieptList.append(recieptString(str(y)+' bolletjes '+str(x),(y*1.1)))
     if toppingPass == 'slagroom':
-        recieptList.append(recieptString(toppingPass,toppingDict[toppingPass]))
-        priceList.append(toppingDict[toppingPass])
+        toppingReciept(toppingPass)
     elif toppingPass == 'sprinkels':
-        recieptList.append(recieptString(toppingPass,toppingDict[toppingPass]))
-        priceList.append(toppingDict[toppingPass])
+        toppingReciept(toppingPass)
     elif toppingPass == 'caramel':
         if bakOfHoorn == 'bakje':
-            recieptList.append(recieptString(toppingPass,toppingDict['caramelBak']))
-            priceList.append(toppingDict['caramelBak'])
+            toppingReciept('caramelBak')
         elif bakOfHoorn == 'hoorntje':
-            recieptList.append(recieptString(toppingPass,toppingDict['caramelHoorn']))
-            priceList.append(toppingDict['caramelHoorn'])
+            toppingReciept('caramelHoorn')
     priceList.append(recepticleDict[bakOfHoorn])
     recieptList.append(recieptString('1 '+str(bakOfHoorn),recepticleDict[bakOfHoorn]))
     recieptList.append('-------------------------------')
@@ -175,11 +174,14 @@ def papiParticulier(abiMode=False):
 
 def papiBusiness():
     liters = intConvert(input('Hoeveel liters ijs wilt u kopen?\n'))
+    literList = []
     if type(liters) == int:
         target = 1
         while target <= liters:
             literSmaak = str(input(f'Welke smaak wilt u voor liter {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower()[:1]
             if literSmaak in bolDict.keys():
+                literList.append(bolDict[literSmaak])
+                print(literList)
                 target+=1
             else:
                 print('Dat is geen ijs smaak.')
