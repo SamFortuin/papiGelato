@@ -6,11 +6,12 @@ from os import system
 i = 0
 priceList = []
 recieptList = ['---------[Papi Gelato]---------']
-bolDict = {
-    'a':'aardbei',
-    'c':'chocolade',
-    'm':'munt',
-    'v':'vanille'
+
+tasteDict = { 
+    'aarbei':0,
+    'chocolade':0,
+    'munt':0,
+    'vanille':0
 }
 
 def listPrint(List,delay=False):
@@ -30,7 +31,7 @@ def intConvert(num):
     for x in range(26):
         if alphabet[x] in num:
             numConvert2 = False
-    if numConvert1 == True and numConvert2 == True:
+    if numConvert1 and numConvert2: #skips == True because of if logic
         return int(num)
     else:
         return num
@@ -42,53 +43,65 @@ def clearScreen(sleepTime=2.5):
 def recieptString(var,var2):
     string1 = capwords(str(var))
     string2 = str(format((var2),'.2f')).replace('.',',')
-    stringOut = string1 +'= €'+string2
+    stringOut = string1 +' = €'+string2
     return stringOut
     
 def toppingReciept(var):
     recieptList.append(recieptString(toppingPass,toppingDict[var]))
     priceList.append(toppingDict[var])
 
-def printReciept():
-    global toppingDict 
-    tasteDict = { 
-        'aarbei':bolList.count('aardbei'),
-        'chocolade':bolList.count('chocolade'),
-        'munt':bolList.count('munt'),
-        'vanille':bolList.count('vanille')
-    }
-    recepticleDict = {
-        'bakje':0.75, 
-        'hoorntje':1.25
-    }
-    toppingDict = {
-        'slagroom':0.5,
-        'sprinkels':0.3*bolAantal,
-        'caramelHoorn':0.6,
-        'caramelBak':0.9
-    }
-    recieptList.append('Ijsje '+str(i)+':')
-    for x,y in tasteDict.items(): #loops trough the dict
-        if y > 0:
-            priceList.append(y*1.1)
-            recieptList.append(recieptString(str(y)+' bolletjes '+str(x),(y*1.1)))
-    if toppingPass == 'slagroom':
-        toppingReciept(toppingPass)
-    elif toppingPass == 'sprinkels':
-        toppingReciept(toppingPass)
-    elif toppingPass == 'caramel':
-        if bakOfHoorn == 'bakje':
-            toppingReciept('caramelBak')
-        elif bakOfHoorn == 'hoorntje':
-            toppingReciept('caramelHoorn')
-    priceList.append(recepticleDict[bakOfHoorn])
-    recieptList.append(recieptString('1 '+str(bakOfHoorn),recepticleDict[bakOfHoorn]))
-    recieptList.append('-------------------------------')
+def printReciept(version='particulier'):
+    global tasteDict,toppingDict
+    if version == 'particulier':
+        tasteDict = { 
+            'aarbei':bolList.count('aardbei'),
+            'chocolade':bolList.count('chocolade'),
+            'munt':bolList.count('munt'),
+            'vanille':bolList.count('vanille')
+        }
+        recepticleDict = {
+            'bakje':0.75, 
+            'hoorntje':1.25
+        }
+        toppingDict = {
+            'slagroom':0.5,
+            'sprinkels':0.3*bolAantal,
+            'caramelHoorn':0.6,
+            'caramelBak':0.9
+        }
+        recieptList.append('Ijsje '+str(i)+':')
+        for x,y in tasteDict.items(): #loops trough the dict
+            if y > 0:
+                priceList.append(y*1.1)
+                recieptList.append(recieptString(str(y)+' bolletjes '+str(x),(y*1.1)))
+        if toppingPass == 'slagroom':
+            toppingReciept(toppingPass)
+        elif toppingPass == 'sprinkels':
+            toppingReciept(toppingPass)
+        elif toppingPass == 'caramel':
+            if bakOfHoorn == 'bakje':
+                toppingReciept('caramelBak')
+            elif bakOfHoorn == 'hoorntje':
+                toppingReciept('caramelHoorn')
+        priceList.append(recepticleDict[bakOfHoorn])
+        recieptList.append(recieptString('1 '+str(bakOfHoorn),recepticleDict[bakOfHoorn]))
+        recieptList.append('-------------------------------')
+
+    elif version == 'business':
+        recieptList[0] = '-----[Papi Gelato Zakelijk]-----'
+        for x,y in tasteDict.items(): #loops trough the dict
+            if y > 0:
+                priceList.append(y*9.8)
+                recieptList.append(recieptString(str(y)+' liter '+str(x),(y*9.8)))
+                recieptList.append('--------------------------------')#adds extra dash compared to particulier make reciept look right
+
     if again == 'n':
         while len(priceList) > 1: #adds up and deletes part of the list until there is only 1 value left which is then used in the total
             priceList[1] = priceList[0] + priceList[1]
             del priceList[0]
         recieptList.append(recieptString('totaal',priceList[0]))
+        if version == 'business':
+            recieptList.append(recieptString('BTW (9%)',(priceList[0]*0.09)))
 
 def toppingQuestion():
     global toppingPass
@@ -109,14 +122,20 @@ def papiParticulier(abiMode=False):
     clearScreen(1.5)
     global bolAantal, bolList, bakOfHoorn, again
     bolList = []
+    bolDict = {
+    'a':'aardbei',
+    'c':'chocolade',
+    'm':'munt',
+    'v':'vanille'
+    }
+    bakOfHoornDict = {
+    'a':'hoorntje',
+    'b':'bakje'
+    }
     bolAantal = intConvert(input('Hoeveel bolletjes wilt u?\n').lower())
     if type(bolAantal) == int:
         if bolAantal <= 3 and bolAantal >= 1:
             bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","")[:1].replace('h','a')
-            bakOfHoornDict = {
-                'a':'hoorntje',
-                'b':'bakje'
-            }
             if bakOfHoorn in bakOfHoornDict.keys():
                 bakOfHoorn = bakOfHoornDict[bakOfHoorn]
             else:
@@ -145,7 +164,7 @@ def papiParticulier(abiMode=False):
         if bolAantal < 9:
             target = 1
             while target <= bolAantal:
-                welkeBol = str(input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower()[:1]
+                welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n').lower()[:1]
                 if welkeBol in bolDict.keys():
                     bolList.append(bolDict[welkeBol])
                     target+=1
@@ -173,32 +192,34 @@ def papiParticulier(abiMode=False):
         papiParticulier()
 
 def papiBusiness():
-    liters = intConvert(input('Hoeveel liters ijs wilt u kopen?\n'))
-    literList = []
-    if type(liters) == int:
-        target = 1
-        while target <= liters:
-            literSmaak = str(input(f'Welke smaak wilt u voor liter {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n')).lower()[:1]
-            if literSmaak in bolDict.keys():
-                literList.append(bolDict[literSmaak])
-                print(literList)
-                target+=1
-            else:
-                print('Dat is geen ijs smaak.')
-                target+=0
-    else:
-        print('Niet een cijfer. Probeer opnieuw?')
-        clearScreen(0.5)
-        papiBusiness()
+    global again
+    target = 0
+    tasteDictList = list(tasteDict.keys())
+    #liters = intConvert(input('Hoeveel liters ijs wilt u kopen?\n'))
+    while target < 4:
+        if target == 0:
+            liters = intConvert(input('Hoeveel liters '+tasteDictList[target]+'en ijs wilt u kopen?\n'))
+        else:
+            liters = intConvert(input('Hoeveel liters '+tasteDictList[target]+' ijs wilt u kopen?\n'))
+        if type(liters) == int:
+            tasteDict[str(tasteDictList[target])] = liters
+            target+=1
+        else:
+            print('Dat is niet een getal.')
+            target+=0
+        again = 'n'
+    clearScreen(0)
+    printReciept('business')
 
 def main():
     print('Welkom bij Papi Gelato.') #prints welcome line only at start of code
-    business = input("Bent u\n1) particulier\n2) zakelijk\n")
-    if business == '1' or business == 'particulier':
+    business = input("Bent u\n1) particulier\n2) zakelijk\n")[:1]
+    if business == '1' or business == 'p':
         papiParticulier()
         listPrint(recieptList,False)
-    elif business == '2' or business == 'zakelijk':
+    elif business == '2' or business == 'z':
         papiBusiness()
+        listPrint(recieptList,False)
     else:
         print('Niet een optie probeer opnieuw')
         clearScreen(0.8)
