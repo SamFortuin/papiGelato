@@ -24,12 +24,12 @@ def listPrint(List,delay=False):
 def intConvert(num):
     numConvert1 = False
     numConvert2 = True
-    alphabet = list(ascii_lowercase)
+    alphabet = list(ascii_lowercase) #creates list of lowercase alphabet
     for i in range(10):
         if str(i) in num:
             numConvert1 = True
     for x in range(26):
-        if alphabet[x] in num:
+        if alphabet[x] in num: #checks if a letter is present in the arg
             numConvert2 = False
     if numConvert1 and numConvert2: #skips == True because of if logic
         return int(num)
@@ -112,7 +112,7 @@ def toppingQuestion():
         'sp':'sprinkels',
         'ca':'caramel'
     }
-    if topping in toppingDict.keys():
+    if topping in toppingDict:
         toppingPass = toppingDict[topping]
     else:
         print('Dat is geen topping')
@@ -133,10 +133,10 @@ def papiParticulier(abiMode=False):
     'b':'bakje'
     }
     bolAantal = intConvert(input('Hoeveel bolletjes wilt u?\n').lower())
-    if type(bolAantal) == int:
+    if isinstance(bolAantal, int): #changed from type(bolAantal) == int to comply with Liskov
         if bolAantal <= 3 and bolAantal >= 1:
             bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","")[:1].replace('h','a')
-            if bakOfHoorn in bakOfHoornDict.keys():
+            if bakOfHoorn in bakOfHoornDict:
                 bakOfHoorn = bakOfHoornDict[bakOfHoorn]
             else:
                 if abiMode:
@@ -165,7 +165,7 @@ def papiParticulier(abiMode=False):
             target = 1
             while target <= bolAantal:
                 welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n').lower()[:1]
-                if welkeBol in bolDict.keys():
+                if welkeBol in bolDict:
                     bolList.append(bolDict[welkeBol])
                     target+=1
                 else:
@@ -194,14 +194,13 @@ def papiParticulier(abiMode=False):
 def papiBusiness():
     global again
     target = 0
-    tasteDictList = list(tasteDict.keys())
-    #liters = intConvert(input('Hoeveel liters ijs wilt u kopen?\n'))
+    tasteDictList = list(tasteDict)
     while target < 4:
         if target == 0:
-            liters = intConvert(input('Hoeveel liters '+tasteDictList[target]+'en ijs wilt u kopen?\n'))
+            liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]}en ijs wilt u kopen?\n'))
         else:
-            liters = intConvert(input('Hoeveel liters '+tasteDictList[target]+' ijs wilt u kopen?\n'))
-        if type(liters) == int:
+            liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]} ijs wilt u kopen?\n'))
+        if isinstance(liters,int): #changed from type(liters) == int to comply with Liskov
             tasteDict[str(tasteDictList[target])] = liters
             target+=1
         else:
