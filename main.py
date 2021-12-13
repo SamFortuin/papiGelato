@@ -201,7 +201,7 @@ def papiBusiness():
         else:
             liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]} ijs wilt u kopen?\n'))
         if isinstance(liters,int): #changed from type(liters) == int to comply with Liskov
-            tasteDict[str(tasteDictList[target])] = liters
+            tasteDict[tasteDictList[target]] = liters
             target+=1
         else:
             print('Dat is niet een getal.')
