@@ -102,7 +102,8 @@ def printReciept(version='particulier'):
             del priceList[0]
         recieptList.append(recieptString('totaal',priceList[0]))
         if version == 'business':
-            recieptList.append(recieptString('BTW (9%)',(priceList[0]*0.09)))
+            btwPercent = 6 #change if btw changes again
+            recieptList.append(recieptString(f'BTW ({btwPercent}%)',(priceList[0]*(0.01 * btwPercent)))) # changed from 9%
 
 def toppingQuestion():
     global toppingPass
@@ -126,7 +127,7 @@ def papiParticulier(abiMode=False):
     bolDict = {
     'a':'aardbei',
     'c':'chocolade',
-    #'m':'munt',
+    #'m':'munt', uncomment to add mint back
     'v':'vanille'
     }
     bakOfHoornDict = {
@@ -165,7 +166,7 @@ def papiParticulier(abiMode=False):
         if bolAantal < 9:
             target = 1
             while target <= bolAantal:
-                welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nV) Vanille\n').lower()[:1]#M) Munt\nV) Vanille\n').lower()[:1]
+                welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nV) Vanille\n').lower()[:1]#M) Munt\nV) Vanille\n').lower()[:1] uncomment to add mint back in
                 if welkeBol in bolDict:
                     bolList.append(bolDict[welkeBol])
                     target+=1
