@@ -126,7 +126,7 @@ def papiParticulier(abiMode=False):
     bolDict = {
     'a':'aardbei',
     'c':'chocolade',
-    'm':'munt',
+    #'m':'munt',
     'v':'vanille'
     }
     bakOfHoornDict = {
@@ -165,7 +165,7 @@ def papiParticulier(abiMode=False):
         if bolAantal < 9:
             target = 1
             while target <= bolAantal:
-                welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nM) Munt\nV) Vanille\n').lower()[:1]
+                welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nV) Vanille\n').lower()[:1]#M) Munt\nV) Vanille\n').lower()[:1]
                 if welkeBol in bolDict:
                     bolList.append(bolDict[welkeBol])
                     target+=1
@@ -196,7 +196,12 @@ def papiBusiness():
     global again
     target = 0
     tasteDictList = list(tasteDict)
-    while target < 4:
+    tasteDict.pop("munt") #comment out if mint returns
+    if "munt" in tasteDict:
+        targetNum = 4
+    else:
+        targetNum = 3
+    while target < targetNum:
         if target == 0:
             liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]}en ijs wilt u kopen?\n'))
         else:
@@ -208,6 +213,7 @@ def papiBusiness():
             print('Dat is niet een getal.')
             target+=0
         again = 'n'
+    
     clearScreen(0)
     printReciept('business')
 
