@@ -52,6 +52,7 @@ def toppingReciept(var):
 
 def printReciept(version='particulier'):
     global tasteDict,toppingDict
+    ijsPrijs = 0.95
     if version == 'particulier':
         tasteDict = { 
             'aarbei':bolList.count('aardbei'),
@@ -72,8 +73,8 @@ def printReciept(version='particulier'):
         recieptList.append('Ijsje '+str(i)+':')
         for x,y in tasteDict.items(): #loops trough the dict
             if y > 0:
-                priceList.append(y*1.1)
-                recieptList.append(recieptString(str(y)+' bolletjes '+str(x),(y*1.1)))
+                priceList.append(y*ijsPrijs)
+                recieptList.append(recieptString(str(y)+' bolletjes '+str(x),(y*ijsPrijs)))
         if toppingPass == 'slagroom':
             toppingReciept(toppingPass)
         elif toppingPass == 'sprinkels':
