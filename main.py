@@ -133,7 +133,7 @@ def papiParticulier(abiMode=False):
     'b':'bakje'
     }
     bolAantal = intConvert(input('Hoeveel bolletjes wilt u?\n').lower())
-    if isinstance(bolAantal, int): #changed from type(bolAantal) == int to comply with Liskov
+    if isinstance(bolAantal, int): #changed from type(bolAantal) == int
         if bolAantal <= 3 and bolAantal >= 1:
             bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","")[:1].replace('h','a')
             if bakOfHoorn in bakOfHoornDict:
@@ -200,7 +200,7 @@ def papiBusiness():
             liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]}en ijs wilt u kopen?\n'))
         else:
             liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]} ijs wilt u kopen?\n'))
-        if isinstance(liters,int): #changed from type(liters) == int to comply with Liskov
+        if isinstance(liters,int): #changed from type(liters) == int
             tasteDict[tasteDictList[target]] = liters
             target+=1
         else:
