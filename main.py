@@ -102,8 +102,8 @@ def printReciept(version='particulier'):
             del priceList[0]
         recieptList.append(recieptString('totaal',priceList[0]))
         if version == 'business':
-            btwPercent = 6 #change if btw changes again
-            recieptList.append(recieptString(f'BTW ({btwPercent}%)',(priceList[0]*(0.01 * btwPercent)))) # changed from 9%
+            btwPercent = 6 #change if tax changes again
+            recieptList.append(recieptString(f'BTW ({btwPercent}%)',((priceList[0]/(100+btwPercent))*btwPercent))) # changed from 9%
 
 def toppingQuestion():
     global toppingPass
@@ -151,19 +151,13 @@ def papiParticulier(abiMode=False):
         elif bolAantal >= 4 and bolAantal <= 8:
             print(f'Dan krijgt u van mij een bakje met {bolAantal} bolletjes')
             bakOfHoorn = 'bakje'
-        elif bolAantal >= 9:
+        elif bolAantal > 8:
             print('Sorry, zulke grote bakken hebben we niet')
-        elif bolAantal == 0:
-            again = input('Wilt u geen ijsje?').lower()[:1]
-            if again == 'n':
-                print('Okay, fijne dag verder.')
-                exit()
-            elif again == 'j' or again == 'y':
-                papiParticulier()
-            else:
-                print("Sorry dat is geen optie die we aanbieden...")
-                papiParticulier()
-        if bolAantal < 9:
+            papiParticulier()
+        elif bolAantal < 1 :
+            print("Sorry dat is geen optie die we aanbieden...")
+            papiParticulier()
+        if bolAantal > 0 and bolAantal < 9:
             target = 1
             while target <= bolAantal:
                 welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nV) Vanille\n').lower()[:1]#M) Munt\nV) Vanille\n').lower()[:1] uncomment to add mint back in
@@ -173,22 +167,22 @@ def papiParticulier(abiMode=False):
                 else:
                     print('Sorry dat is geen optie die we aanbieden...')
                     target += 0
-
-        toppingQuestion()
+            
+            toppingQuestion()
         
-        again = input('Wilt u nog meer ijsjes bestellen? (J/N)\n').lower()[:1]
-        if again == 'n':
-            global i
-            i+=1
-            print('Okay, hier is uw bonnetje. fijne dag verder.\n\n')
-            printReciept()
-        elif again == 'j' or again == 'y':
-            i+=1
-            printReciept()
-            papiParticulier()
-        else:
-            print("Sorry dat is geen optie die we aanbieden...")
-            papiParticulier()
+            again = input('Wilt u nog meer ijsjes bestellen? (J/N)\n').lower()[:1]
+            if again == 'n':
+                global i
+                i+=1
+                print('Okay, hier is uw bonnetje. fijne dag verder.\n\n')
+                printReciept()
+            elif again == 'j' or again == 'y':
+                i+=1
+                printReciept()
+                papiParticulier()
+            else:
+                print("Sorry dat is geen optie die we aanbieden...")
+                papiParticulier()
     else:
         print("Niet een getal, probeer het opnieuw.")
         papiParticulier()
@@ -197,8 +191,8 @@ def papiBusiness():
     global again
     target = 0
     tasteDictList = list(tasteDict)
-    tasteDict.pop("munt") #comment out if mint returns
-    if "munt" in tasteDict:
+    del tasteDictList[tasteDictList.index("munt")] #comment out if mint returns
+    if "munt" in tasteDictList:
         targetNum = 4
     else:
         targetNum = 3
@@ -207,12 +201,15 @@ def papiBusiness():
             liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]}en ijs wilt u kopen?\n'))
         else:
             liters = intConvert(input(f'Hoeveel liters {tasteDictList[target]} ijs wilt u kopen?\n'))
-        if isinstance(liters,int): #changed from type(liters) == int
+        if isinstance(liters,int) and liters > 0: #changed from type(liters) == int
             tasteDict[tasteDictList[target]] = liters
             target+=1
-        else:
+        elif type(liters) != int:
             print('Dat is niet een getal.')
             target+=0
+        elif liters < 1:
+            print('Dat is een negatief getal.')
+            target +=0
         again = 'n'
     
     clearScreen(0)
@@ -233,3 +230,7 @@ def main():
         main()
 
 main()
+
+
+
+#TODO Fix < 0 business
