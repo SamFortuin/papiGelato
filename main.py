@@ -157,8 +157,8 @@ def papiParticulier(abiMode=False):
         elif bolAantal < 1 :
             print("Sorry dat is geen optie die we aanbieden...")
             papiParticulier()
+        target = 1
         if bolAantal > 0 and bolAantal < 9:
-            target = 1
             while target <= bolAantal:
                 welkeBol = input(f'Welke smaak wilt u voor bolletje nummer {target}? \nA) Aardbei\nC) Chocolade\nV) Vanille\n').lower()[:1]#M) Munt\nV) Vanille\n').lower()[:1] uncomment to add mint back in
                 if welkeBol in bolDict:
