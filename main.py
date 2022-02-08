@@ -230,7 +230,3 @@ def main():
         main()
 
 main()
-
-
-
-#TODO Fix < 0 business
