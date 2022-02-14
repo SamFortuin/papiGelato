@@ -120,7 +120,21 @@ def toppingQuestion():
         print('Dat is geen topping')
         toppingQuestion()
 
-def papiParticulier(abiMode=False):
+def bakOfHoornFunc():
+    bakOfHoornDict = {
+        'a':'hoorntje',
+        'b':'bakje'
+    }
+
+    inVar = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","")[:1].replace('h','a')
+    
+    if inVar in bakOfHoornDict:
+        return bakOfHoornDict[inVar]
+    else:
+        print('Dat is niet een optie die we aanbieden. probeer opnieuw.')
+        return 7
+        
+def papiParticulier():
     clearScreen(1.5)
     global bolAantal, bolList, bakOfHoorn, again
     bolList = []
@@ -130,24 +144,14 @@ def papiParticulier(abiMode=False):
     #'m':'munt', uncomment to add mint back
     'v':'vanille'
     }
-    bakOfHoornDict = {
-    'a':'hoorntje',
-    'b':'bakje'
-    }
     bolAantal = intConvert(input('Hoeveel bolletjes wilt u?\n').lower())
     if isinstance(bolAantal, int): #changed from type(bolAantal) == int
         if bolAantal <= 3 and bolAantal >= 1:
-            bakOfHoorn = input(f'Wilt u deze {bolAantal} bolletje(s) in \nA) een hoorntje\nB) een bakje\n').lower().replace("een","")[:1].replace('h','a')
-            if bakOfHoorn in bakOfHoornDict:
-                bakOfHoorn = bakOfHoornDict[bakOfHoorn]
-            else:
-                if abiMode:
-                    if bakOfHoorn == "nee":
-                        print("Dan krijg je zo abi.")
-                    else:
-                        print('Daar kan ik niks mee abi, ik geef je gewoon zo mee.')
-                else:
-                    print('Sorry dat is geen optie die we aanbieden...')
+            bakType = True
+            while bakType:
+                bakOfHoorn = bakOfHoornFunc()
+                if type(bakOfHoorn) == str:
+                    bakType = False
         elif bolAantal >= 4 and bolAantal <= 8:
             print(f'Dan krijgt u van mij een bakje met {bolAantal} bolletjes')
             bakOfHoorn = 'bakje'
@@ -218,12 +222,16 @@ def papiBusiness():
 def main():
     print('Welkom bij Papi Gelato.') #prints welcome line only at start of code
     business = input("Bent u\n1) particulier\n2) zakelijk\n")[:1]
-    if business == '1' or business == 'p':
+    if business == '1' or business == 'p':#p is van particulier
         papiParticulier()
-        listPrint(recieptList,False)
-    elif business == '2' or business == 'z':
+        # listPrint(recieptList)
+        #[ ] check why this^ failed to print
+        #[~]implemented less messy way, still no clue why it failed
+        print(*recieptList,sep='\n')
+    elif business == '2' or business == 'z': #z is van zakelijk
         papiBusiness()
-        listPrint(recieptList,False)
+        print(*recieptList,sep='\n')
+        # listPrint(recieptList)
     else:
         print('Sorry dat is geen optie die we aanbieden...')
         clearScreen(0.8)
